@@ -149,6 +149,7 @@ func main() {
 
 			for _, cookie := range networkCookies {
 				Env.Set("cookie."+cookie.Name, cookie.Value)
+				fmt.Println("设置cookie：", cookie.Name, cookie.Value)
 				err := Env.WriteConfig()
 				if err != nil {
 					panic(err)
