@@ -62,7 +62,7 @@ func main() {
 			var opts []chromedp.ExecAllocatorOption
 
 			flags := []chromedp.ExecAllocatorOption{
-				chromedp.Flag("headless", false), // 是否隐藏浏览器窗口，如果是win10要测试改为false
+				chromedp.Flag("headless", true), // 是否隐藏浏览器窗口，如果是win10要测试改为false
 				chromedp.Flag("enable-automation", false),
 			}
 			opts = chromedp.DefaultExecAllocatorOptions[:]
