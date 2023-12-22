@@ -156,7 +156,7 @@ func main() {
 				}
 			}
 
-			fmt.Println("重新请求")
+			fmt.Println("重新请求，当前密钥：", Env.GetString("cookie.ff14risingstones"))
 			response = common.Post(Env.GetString("api.sign_in"), nil, "")
 			err = common.FFXIVIsError(response)
 			if err != nil {
