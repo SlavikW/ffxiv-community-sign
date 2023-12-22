@@ -23,20 +23,27 @@ var Env = config.Env
 
 func main() {
 
-	user := Env.GetString("user.username")
-	if user == "" {
-		fmt.Println("请输入账号：")
-		fmt.Scanln(&user)
-	}
-	pass := Env.GetString("user.password")
-	if pass == "" {
-		fmt.Println("请输入密码：")
-		passByte, err := terminal.ReadPassword(int(os.Stdin.Fd()))
-		if err != nil {
-			fmt.Println("\n读取密码时发生错误：", err)
-			return
+	var user string
+	var pass string
+	if os.Getenv("GITHUB_ACTIONS") == "true" {
+		user = os.Getenv("USER")
+		pass = os.Getenv("PASS")
+	} else {
+		user = Env.GetString("user.username")
+		if user == "" {
+			fmt.Println("请输入账号：")
+			fmt.Scanln(&user)
 		}
-		pass = string(passByte)
+		pass = Env.GetString("user.password")
+		if pass == "" {
+			fmt.Println("请输入密码：")
+			passByte, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+			if err != nil {
+				fmt.Println("\n读取密码时发生错误：", err)
+				return
+			}
+			pass = string(passByte)
+		}
 	}
 
 	if user == "" || pass == "" {
