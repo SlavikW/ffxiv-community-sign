@@ -86,6 +86,10 @@ func main() {
 			if err := chromedp.Run(ctx,
 				network.ClearBrowserCache(),
 				chromedp.Navigate("https://ff14risingstones.web.sdo.com/pc/index.html#/post"),
+				chromedp.ActionFunc(func(ctx context.Context) error {
+					fmt.Println("开始登录")
+					return nil
+				}),
 				chromedp.Sleep(5*time.Second),
 				chromedp.WaitVisible(`#aside > div.el-card.is-always-shadow > div > div.mb20 > div.flex.h120.alcenter.jccenter > button`, chromedp.ByQuery),
 				chromedp.Click("#aside > div.el-card.is-always-shadow > div > div.mb20 > div.flex.h120.alcenter.jccenter > button", chromedp.ByQuery),
@@ -102,6 +106,10 @@ func main() {
 			var iframes []*cdp.Node
 			if err := chromedp.Run(ctx,
 				chromedp.Nodes(`iframe`, &iframes, chromedp.ByQuery),
+				chromedp.ActionFunc(func(ctx context.Context) error {
+					fmt.Println("却换到wegame登录页面")
+					return nil
+				}),
 			); err != nil {
 				fmt.Println(err)
 			}
@@ -110,6 +118,10 @@ func main() {
 
 			if err := chromedp.Run(ctx,
 				chromedp.WaitVisible("#switcher_plogin"),
+				chromedp.ActionFunc(func(ctx context.Context) error {
+					fmt.Println("输入账号密码登录阶段")
+					return nil
+				}),
 				chromedp.Click("#switcher_plogin", chromedp.ByID, chromedp.FromNode(sectionNode)),
 				chromedp.Sleep(2*time.Second),
 				chromedp.SetValue(`#u`, u, chromedp.ByID, chromedp.FromNode(sectionNode)),
@@ -126,6 +138,7 @@ func main() {
 				chromedp.Navigate("https://ff14risingstones.web.sdo.com/pc/index.html#/post"),
 				chromedp.Sleep(3*time.Second),
 				chromedp.ActionFunc(func(ctx context.Context) error {
+					fmt.Println("登录成功，获取cookie")
 					var err error
 					networkCookies, err = network.GetCookies().Do(ctx)
 					return err
@@ -146,10 +159,10 @@ func main() {
 			response = common.Post(Env.GetString("api.sign_in"), nil, "")
 			err = common.FFXIVIsError(response)
 			if err != nil {
-				fmt.Println("错误信息：" + err.Error())
+				fmt.Println(err.Error())
 			}
 		} else {
-			fmt.Println("错误信息：" + err.Error())
+			fmt.Println(err.Error())
 		}
 	}
 	fmt.Println("签到成功")
