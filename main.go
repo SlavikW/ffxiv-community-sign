@@ -135,6 +135,7 @@ func main() {
 			}
 
 			if err := chromedp.Run(ctx,
+				chromedp.WaitVisible(`#me`, chromedp.ByQuery),
 				chromedp.Navigate("https://ff14risingstones.web.sdo.com/pc/index.html#/post"),
 				chromedp.Sleep(3*time.Second),
 				chromedp.ActionFunc(func(ctx context.Context) error {
